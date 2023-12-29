@@ -1,0 +1,64 @@
+from flask import Flask
+import requests
+
+token="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"
+headers = {"Authorization": f"token {token}"}
+app = Flask(__name__)
+
+@app.route("/")
+
+def get_github_repos():
+    """Retrieves a list of repositories from a GitHub profile.
+
+    Args:
+        username (str): The GitHub username.
+        token (str): The personal access token for authentication.
+
+    Returns:
+        list: A list of repository dictionaries, or None on error.
+    """
+
+    api_url = f"https://api.github.com/users/kartikrameshiyer/repos"
+
+
+    try:
+        response = requests.get(api_url, headers=headers)
+
+        if response.status_code == 200:
+            repos = response.json()
+            return repos
+        else:
+            print("Error:", response.status_code, response.text)
+            return None
+
+    except requests.exceptions.RequestException as e:
+        print("Error:", e)
+        return None
+
+
+def get_branches(repo_for_branches):
+    for branch in repo_for_branches:
+        branch_details = f'{branch}/branches?per_page=100'
+        branches_request = requests.get(f'{branch_details}', headers=headers)
+        if branches_request.status_code == 200:
+            branches = branches_request.json()
+        return branches
+
+# Example usage:
+if __name__ == "__main__":
+    repos = get_github_repos()
+    branches = get_branches(repos)
+    repo_for_branches=[]
+    if repos:
+        for repo in repos:
+            # print(f"Name: {repo['name']}")
+            # print(f"Description: {repo['description']}")
+            # print(f"URL: {repo['html_url']}\n")
+            repo_for_branches.append(repo['html_url'])
+
+    else:
+        print("Failed to retrieve repositories.")
+if branches:
+            print("Available branches:")
+            for branch in branches:
+                print(f"- {branch}")
