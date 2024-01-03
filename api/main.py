@@ -1,5 +1,8 @@
 from flask import Flask, jsonify,request
+#from flask_cors import CORS
 from flask_cors import CORS
+
+
 import requests
 
 app = Flask(__name__)
@@ -7,7 +10,7 @@ CORS(app)
 
 def get_github_repos(username, token):
     api_url = f"https://api.github.com/users/{username}/repos"
-    headers = {"Authorization": f"token {token}"}
+    headers = {"Authorization": f"{token}"}
 
     try:
         response = requests.get(api_url, headers=headers)

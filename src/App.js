@@ -25,7 +25,7 @@ function App() {
       <header className="App-header">
         <h1>GitHub Repo Viewer</h1>
       </header>
-      <div className="App-body">
+      <div className="App-container">
         <aside className="App-sidebar">
           <label>
             GitHub Username:
@@ -35,8 +35,8 @@ function App() {
             Personal Access Token:
             <input type="password" value={token} onChange={(e) => setToken(e.target.value)} />
           </label>
-          <button onClick={fetchData} disabled={loading}>
-            {loading ? 'Fetching...' : 'Fetch Repositories'}
+            <button onClick={fetchData} disabled={loading} className="large-button custom-button"> 
+              {loading ? 'Fetching...' : 'Fetch Repositories'}
           </button>
         </aside>
         <main className="App-main">
@@ -47,7 +47,9 @@ function App() {
               <li key={repo.Name} className="repo-item">
                 <strong>{repo.Name}</strong>
                 <p className="repo-description">{repo.Description}</p>
-                <a href={repo.URL} target="_blank" rel="noopener noreferrer"> {repo.URL}</a>
+                <a href={repo.URL} target="_blank" rel="noopener noreferrer">
+                  {repo.URL}
+                </a>
                 {repo.Branches && (
                   <div className="repo-branches">
                     <strong>Branches:</strong>
